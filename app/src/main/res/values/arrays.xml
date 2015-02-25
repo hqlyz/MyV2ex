@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="fragment_titles">
+        <item>Latest</item>
+        <item>All Nodes</item>
+        <item>User</item>
+    </array>
+</resources>
