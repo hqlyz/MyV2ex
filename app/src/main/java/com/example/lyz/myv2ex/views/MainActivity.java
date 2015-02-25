@@ -163,7 +163,11 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+    public void setSwipeRefreshEnabled(boolean enabled) {
+        swipeRefreshLayout.setEnabled(enabled);
+    }
+
+    private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
         public MyFragmentPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);

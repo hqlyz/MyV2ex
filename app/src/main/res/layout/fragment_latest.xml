@@ -4,6 +4,10 @@
 
     <ListView
         android:id="@+id/latestListView"
+        android:scrollbars="none"
+        android:divider="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        android:dividerHeight="0px"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
