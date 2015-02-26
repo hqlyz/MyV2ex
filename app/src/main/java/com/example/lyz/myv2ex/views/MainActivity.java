@@ -187,14 +187,11 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public Fragment getItem(int position) {
-//            Bundle bundle = new Bundle();
             switch (position) {
                 case 0:
                     if(latestFragment == null) {
                         latestFragment = new LatestFragment();
                     }
-//                    bundle.putParcelableArrayList(AppConfig.PARCEL_TOPIC_MODEL_KEY, topicModelList);
-//                    latestFragment.setArguments(bundle);
                     return latestFragment;
                 case 1:
                     return new AllNodesFragment();

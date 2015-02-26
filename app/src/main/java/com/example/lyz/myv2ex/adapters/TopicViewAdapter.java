@@ -49,7 +49,8 @@ public class TopicViewAdapter extends ArrayAdapter<TopicModel> {
         content_text_view.setText(topicModel.getContent());
         name_text_view.setText(topicModel.getMemberModel().getUserName());
         time_ago_text_view.setText(topicModel.getCreated() + "");
-        replies_text_view.setText(topicModel.getReplies() + "");
+        int replies = topicModel.getReplies();
+        replies_text_view.setText(replies <= 1 ? replies + " reply" : replies + " replies");
 
         if(position > lastPosition) {
             AnimatorSet animatorSet = new AnimatorSet();
