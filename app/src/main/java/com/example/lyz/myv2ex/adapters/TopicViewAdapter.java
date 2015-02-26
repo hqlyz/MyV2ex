@@ -8,11 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.lyz.myv2ex.R;
 import com.example.lyz.myv2ex.models.TopicModel;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class TopicViewAdapter extends ArrayAdapter<TopicModel> {
     private Context context;
@@ -32,6 +36,20 @@ public class TopicViewAdapter extends ArrayAdapter<TopicModel> {
         if(convertView == null) {
             convertView = LayoutInflater.from(context).inflate(resourceId, parent, false);
         }
+
+        TextView title_text_view = (TextView)convertView.findViewById(R.id.topic_title_text_view);
+        TextView content_text_view = (TextView)convertView.findViewById(R.id.topic_content_text_view);
+        ImageView avatar_image_view = (ImageView)convertView.findViewById(R.id.topic_avatar_image_view);
+        TextView name_text_view = (TextView)convertView.findViewById(R.id.topic_name_text_view);
+        TextView time_ago_text_view = (TextView)convertView.findViewById(R.id.topic_time_ago_text_view);
+        TextView replies_text_view = (TextView)convertView.findViewById(R.id.topic_replies_text_view);
+
+        TopicModel topicModel = topicModelList.get(position);
+        title_text_view.setText(topicModel.getTitle());
+        content_text_view.setText(topicModel.getContent());
+        name_text_view.setText(topicModel.getMemberModel().getUserName());
+        time_ago_text_view.setText(topicModel.getCreated() + "");
+        replies_text_view.setText(topicModel.getReplies() + "");
 
         if(position > lastPosition) {
             AnimatorSet animatorSet = new AnimatorSet();

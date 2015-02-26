@@ -4,5 +4,5 @@
     <color name="refresh_progress_color_2">#0f0</color>
     <color name="refresh_progress_color_3">#00f</color>
     <color name="text_color_black">#000</color>
-    <color name="main_background_color">#ccc</color>
+    <color name="main_background_color">#ddd</color>
 </resources>

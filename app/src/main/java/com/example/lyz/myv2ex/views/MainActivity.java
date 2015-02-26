@@ -14,12 +14,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.lyz.myv2ex.AppConfig;
+import com.example.lyz.myv2ex.DebugLog;
 import com.example.lyz.myv2ex.R;
+import com.example.lyz.myv2ex.models.MemberModel;
+import com.example.lyz.myv2ex.models.NodeModel;
 import com.example.lyz.myv2ex.models.TopicModel;
 import com.example.lyz.myv2ex.views.fragments.AllNodesFragment;
 import com.example.lyz.myv2ex.views.fragments.LatestFragment;
 import com.example.lyz.myv2ex.views.fragments.UserFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -27,14 +37,18 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity {
 
     private ViewPager viewPager;
+    private ActionBar actionBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private String[] fragmentTitles;
     private Resources resources;
-    private ActionBar actionBar;
     private FragmentManager fragmentManager;
     private ActionBar.TabListener tabListener;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<TopicModel> topicModelList;
+    private LatestFragment latestFragment;
+    private AllNodesFragment allNodesFragment;
+    private UserFragment userFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +57,6 @@ public class MainActivity extends ActionBarActivity {
 
         initVars();
         initViews();
-
     }
 
     private void initVars() {
@@ -52,14 +65,14 @@ public class MainActivity extends ActionBarActivity {
         fragmentManager = getSupportFragmentManager();
         fragmentTitles = resources.getStringArray(R.array.fragment_titles);
         topicModelList = new ArrayList<>();
-        for(int i = 0; i < 10; ++i) {
-            TopicModel topicModel = new TopicModel();
-            topicModel.setId(i + 1);
-            topicModel.setTitle("This is title");
-            topicModel.setContent("This is content");
-
-            topicModelList.add(topicModel);
-        }
+//        for(int i = 0; i < 10; ++i) {
+//            TopicModel topicModel = new TopicModel();
+//            topicModel.setId(i + 1);
+//            topicModel.setTitle("This is title");
+//            topicModel.setContent("This is content");
+//
+//            topicModelList.add(topicModel);
+//        }
     }
 
     private void initViews() {
@@ -140,7 +153,6 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -175,19 +187,24 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public Fragment getItem(int position) {
-            Bundle bundle = new Bundle();
+//            Bundle bundle = new Bundle();
             switch (position) {
                 case 0:
-                    LatestFragment latestFragment = new LatestFragment();
-                    bundle.putParcelableArrayList(AppConfig.PARCEL_TOPIC_MODEL_KEY, topicModelList);
-                    latestFragment.setArguments(bundle);
+                    if(latestFragment == null) {
+                        latestFragment = new LatestFragment();
+                    }
+//                    bundle.putParcelableArrayList(AppConfig.PARCEL_TOPIC_MODEL_KEY, topicModelList);
+//                    latestFragment.setArguments(bundle);
                     return latestFragment;
                 case 1:
                     return new AllNodesFragment();
                 case 2:
                     return new UserFragment();
                 default:
-                    return new LatestFragment();
+                    if(latestFragment == null) {
+                        latestFragment = new LatestFragment();
+                    }
+                    return latestFragment;
             }
         }
 
