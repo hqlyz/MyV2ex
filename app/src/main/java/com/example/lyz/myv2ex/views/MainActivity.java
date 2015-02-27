@@ -25,6 +25,7 @@ import com.example.lyz.myv2ex.models.NodeModel;
 import com.example.lyz.myv2ex.models.TopicModel;
 import com.example.lyz.myv2ex.views.fragments.AllNodesFragment;
 import com.example.lyz.myv2ex.views.fragments.LatestFragment;
+import com.example.lyz.myv2ex.views.fragments.SettingFragment;
 import com.example.lyz.myv2ex.views.fragments.UserFragment;
 
 import org.json.JSONArray;
@@ -115,9 +116,9 @@ public class MainActivity extends ActionBarActivity {
 
             }
         };
-        actionBar.addTab(actionBar.newTab().setText("Latest").setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText("All Nodes").setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText("User").setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText(fragmentTitles[0]).setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText(fragmentTitles[1]).setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText(fragmentTitles[2]).setTabListener(tabListener));
         swipeRefreshLayout.setColorSchemeColors(
                 resources.getColor(R.color.refresh_progress_color_1),
                 resources.getColor(R.color.refresh_progress_color_2),
@@ -196,7 +197,7 @@ public class MainActivity extends ActionBarActivity {
                 case 1:
                     return new AllNodesFragment();
                 case 2:
-                    return new UserFragment();
+                    return new SettingFragment();
                 default:
                     if(latestFragment == null) {
                         latestFragment = new LatestFragment();

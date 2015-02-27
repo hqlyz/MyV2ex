@@ -3,6 +3,6 @@
     <array name="fragment_titles">
         <item>Latest</item>
         <item>All Nodes</item>
-        <item>User</item>
+        <item>Setting</item>
     </array>
 </resources>
