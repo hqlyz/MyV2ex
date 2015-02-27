@@ -8,17 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.toolbox.NetworkImageView;
+import com.example.lyz.myv2ex.AppConfig;
+import com.example.lyz.myv2ex.DebugLog;
+import com.example.lyz.myv2ex.MySingleton;
 import com.example.lyz.myv2ex.R;
 import com.example.lyz.myv2ex.models.TopicModel;
-
-import org.w3c.dom.Text;
+import com.example.lyz.myv2ex.widgets.RelativeTimeTextView;
 
 import java.util.ArrayList;
 
-public class TopicViewAdapter extends ArrayAdapter<TopicModel> {
+public class TopicViewAdapter extends ArrayAdapter<TopicModel>{
     private Context context;
     private int resourceId;
     private ArrayList<TopicModel> topicModelList;
@@ -39,16 +42,24 @@ public class TopicViewAdapter extends ArrayAdapter<TopicModel> {
 
         TextView title_text_view = (TextView)convertView.findViewById(R.id.topic_title_text_view);
         TextView content_text_view = (TextView)convertView.findViewById(R.id.topic_content_text_view);
-        ImageView avatar_image_view = (ImageView)convertView.findViewById(R.id.topic_avatar_image_view);
+        NetworkImageView avatar_image_view = (NetworkImageView)convertView.findViewById(R.id.topic_avatar_image_view);
         TextView name_text_view = (TextView)convertView.findViewById(R.id.topic_name_text_view);
-        TextView time_ago_text_view = (TextView)convertView.findViewById(R.id.topic_time_ago_text_view);
+        RelativeTimeTextView time_ago_text_view = (RelativeTimeTextView)convertView.findViewById(R.id.topic_time_ago_text_view);
         TextView replies_text_view = (TextView)convertView.findViewById(R.id.topic_replies_text_view);
 
-        TopicModel topicModel = topicModelList.get(position);
+        final TopicModel topicModel = topicModelList.get(position);
         title_text_view.setText(topicModel.getTitle());
         content_text_view.setText(topicModel.getContent());
+        avatar_image_view.setImageUrl(AppConfig.HTTP + topicModel.getMemberModel().getAvatarNormal(), MySingleton.getInstance(context).getImageLoader());
+        avatar_image_view.setClickable(true);
+        avatar_image_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DebugLog.i(topicModel.getMemberModel().getUserName() + "'s avatar");
+            }
+        });
         name_text_view.setText(topicModel.getMemberModel().getUserName());
-        time_ago_text_view.setText(topicModel.getCreated() + "");
+        time_ago_text_view.setReferenceTime(topicModel.getCreated());
         int replies = topicModel.getReplies();
         replies_text_view.setText(replies <= 1 ? replies + " reply" : replies + " replies");
 

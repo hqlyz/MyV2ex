@@ -2,6 +2,7 @@ package com.example.lyz.myv2ex.views.fragments;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -37,6 +39,8 @@ import java.util.ArrayList;
 public class LatestFragment extends Fragment implements FragmentData {
 
     private ListView latestListView;
+    private ProgressBar loadingProgressBar;
+
     private static ArrayList<TopicModel> topicModelList;
     private TopicViewAdapter topicViewAdapter;
     private Activity activity;
@@ -50,16 +54,14 @@ public class LatestFragment extends Fragment implements FragmentData {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_latest, container, false);
+        latestListView = (ListView)view.findViewById(R.id.latestListView);
+        loadingProgressBar = (ProgressBar)view.findViewById(R.id.loadingProgressBar);
         activity = getActivity();
         if(topicModelList == null) {
             topicModelList = new ArrayList<>();
             getData();
         }
-//        if(topicModelList == null || topicModelList.size() == 0) {
-//            // TODO hide listview and show 'no result' message
-//        }
 
-        latestListView = (ListView)view.findViewById(R.id.latestListView);
         topicViewAdapter = new TopicViewAdapter(getActivity(), R.layout.topic_view, topicModelList);
         latestListView.setAdapter(topicViewAdapter);
         latestListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -82,6 +84,8 @@ public class LatestFragment extends Fragment implements FragmentData {
 
     private void getData() {
         topicModelList.clear();
+        latestListView.setVisibility(View.GONE);
+        loadingProgressBar.setVisibility(View.VISIBLE);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(AppConfig.API_URL + AppConfig.API_LATEST,
             new Response.Listener<JSONArray>() {
             @Override
@@ -131,6 +135,8 @@ public class LatestFragment extends Fragment implements FragmentData {
                         e.printStackTrace();
                     }
                     topicViewAdapter.notifyDataSetChanged();
+                    latestListView.setVisibility(View.VISIBLE);
+                    loadingProgressBar.setVisibility(View.GONE);
                 }
             }
         },

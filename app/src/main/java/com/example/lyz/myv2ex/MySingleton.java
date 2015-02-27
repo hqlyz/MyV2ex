@@ -2,6 +2,8 @@ package com.example.lyz.myv2ex;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.v4.util.LruCache;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,6 +19,20 @@ public class MySingleton {
     private MySingleton(Context context) {
         this.context = context;
         requestQueue = getRequestQueue();
+
+        imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache() {
+            private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
+
+            @Override
+            public Bitmap getBitmap(String s) {
+                return cache.get(s);
+            }
+
+            @Override
+            public void putBitmap(String s, Bitmap bitmap) {
+                cache.put(s, bitmap);
+            }
+        });
     }
 
     public RequestQueue getRequestQueue() {
@@ -35,5 +51,9 @@ public class MySingleton {
 
     public <T> void addToRequestQueue(Request<T> request) {
         getRequestQueue().add(request);
+    }
+
+    public ImageLoader getImageLoader() {
+        return imageLoader;
     }
 }
