@@ -1,7 +1,6 @@
 package com.example.lyz.myv2ex.views;
 
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,28 +13,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.lyz.myv2ex.AppConfig;
 import com.example.lyz.myv2ex.DebugLog;
 import com.example.lyz.myv2ex.R;
-import com.example.lyz.myv2ex.models.MemberModel;
-import com.example.lyz.myv2ex.models.NodeModel;
 import com.example.lyz.myv2ex.models.TopicModel;
 import com.example.lyz.myv2ex.views.fragments.AllNodesFragment;
 import com.example.lyz.myv2ex.views.fragments.LatestFragment;
 import com.example.lyz.myv2ex.views.fragments.SettingFragment;
-import com.example.lyz.myv2ex.views.fragments.UserFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements LatestFragment.Callback {
 
     private ViewPager viewPager;
     private ActionBar actionBar;
@@ -48,7 +36,8 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<TopicModel> topicModelList;
     private LatestFragment latestFragment;
     private AllNodesFragment allNodesFragment;
-    private UserFragment userFragment;
+    private SettingFragment settingFragment;
+    private int currentPage = 0;
 
 
     @Override
@@ -66,19 +55,11 @@ public class MainActivity extends ActionBarActivity {
         fragmentManager = getSupportFragmentManager();
         fragmentTitles = resources.getStringArray(R.array.fragment_titles);
         topicModelList = new ArrayList<>();
-//        for(int i = 0; i < 10; ++i) {
-//            TopicModel topicModel = new TopicModel();
-//            topicModel.setId(i + 1);
-//            topicModel.setTitle("This is title");
-//            topicModel.setContent("This is content");
-//
-//            topicModelList.add(topicModel);
-//        }
     }
 
     private void initViews() {
-        viewPager = (ViewPager)findViewById(R.id.viewPager);
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeRefreshLayout);
+        viewPager = (ViewPager)findViewById(R.id.view_pager);
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setIcon(R.mipmap.ic_launcher);
@@ -93,6 +74,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
+                currentPage = position;
             }
 
             @Override
@@ -104,6 +86,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
                 viewPager.setCurrentItem(tab.getPosition());
+                currentPage = tab.getPosition();
             }
 
             @Override
@@ -127,29 +110,40 @@ public class MainActivity extends ActionBarActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected void onPreExecute() {
-                        swipeRefreshLayout.setRefreshing(true);
-
-                    }
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+//                new AsyncTask<Void, Void, Void>() {
+//                    @Override
+//                    protected void onPreExecute() {
+//                        swipeRefreshLayout.setRefreshing(true);
+//
+//                    }
+//
+//                    @Override
+//                    protected Void doInBackground(Void... params) {
+//                        try {
+//                            Thread.sleep(3000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                        return null;
+//                    }
+//
+//                    @Override
+//                    protected void onPostExecute(Void aVoid) {
+//                        swipeRefreshLayout.setRefreshing(false);
+//
+//                    }
+//                }.execute();
+                switch(currentPage) {
+                    case 0:
+                        if(latestFragment != null) {
+                            latestFragment.updateData();
                         }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
+                        break;
+                    case 1:
+                        DebugLog.i("Page two refreshed.");
                         swipeRefreshLayout.setRefreshing(false);
-
-                    }
-                }.execute();
+                        break;
+                }
             }
         });
     }
@@ -178,6 +172,11 @@ public class MainActivity extends ActionBarActivity {
 
     public void setSwipeRefreshEnabled(boolean enabled) {
         swipeRefreshLayout.setEnabled(enabled);
+    }
+
+    @Override
+    public void updateDataCompleted() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.lyz.myv2ex.AppConfig;
@@ -40,28 +39,29 @@ public class TopicViewAdapter extends ArrayAdapter<TopicModel>{
             convertView = LayoutInflater.from(context).inflate(resourceId, parent, false);
         }
 
-        TextView title_text_view = (TextView)convertView.findViewById(R.id.topic_title_text_view);
-        TextView content_text_view = (TextView)convertView.findViewById(R.id.topic_content_text_view);
-        NetworkImageView avatar_image_view = (NetworkImageView)convertView.findViewById(R.id.topic_avatar_image_view);
-        TextView name_text_view = (TextView)convertView.findViewById(R.id.topic_name_text_view);
-        RelativeTimeTextView time_ago_text_view = (RelativeTimeTextView)convertView.findViewById(R.id.topic_time_ago_text_view);
-        TextView replies_text_view = (TextView)convertView.findViewById(R.id.topic_replies_text_view);
+        TextView titleTextView = (TextView)convertView.findViewById(R.id.topic_title_text_view);
+        TextView contentTextView = (TextView)convertView.findViewById(R.id.topic_content_text_view);
+        NetworkImageView avatarImageView = (NetworkImageView)convertView.findViewById(R.id.topic_avatar_image_view);
+        TextView userNameTextView = (TextView)convertView.findViewById(R.id.topic_user_name_text_view);
+        RelativeTimeTextView timeAgoTextView = (RelativeTimeTextView)convertView.findViewById(R.id.topic_time_ago_text_view);
+        TextView repliesTextView = (TextView)convertView.findViewById(R.id.topic_replies_text_view);
 
         final TopicModel topicModel = topicModelList.get(position);
-        title_text_view.setText(topicModel.getTitle());
-        content_text_view.setText(topicModel.getContent());
-        avatar_image_view.setImageUrl(AppConfig.HTTP + topicModel.getMemberModel().getAvatarNormal(), MySingleton.getInstance(context).getImageLoader());
-        avatar_image_view.setClickable(true);
-        avatar_image_view.setOnClickListener(new View.OnClickListener() {
+        titleTextView.setText(topicModel.getTitle());
+        contentTextView.setText(topicModel.getContent());
+        avatarImageView.setImageUrl(AppConfig.HTTPS + topicModel.getMemberModel().getAvatarNormal(), MySingleton.getInstance(context).getImageLoader());
+        avatarImageView.setClickable(true);
+        avatarImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO open user profile activity
                 DebugLog.i(topicModel.getMemberModel().getUserName() + "'s avatar");
             }
         });
-        name_text_view.setText(topicModel.getMemberModel().getUserName());
-        time_ago_text_view.setReferenceTime(topicModel.getCreated());
+        userNameTextView.setText(topicModel.getMemberModel().getUserName());
+        timeAgoTextView.setReferenceTime(topicModel.getCreated());
         int replies = topicModel.getReplies();
-        replies_text_view.setText(replies <= 1 ? replies + " reply" : replies + " replies");
+        repliesTextView.setText(replies <= 1 ? replies + " reply" : replies + " replies");
 
         if(position > lastPosition) {
             AnimatorSet animatorSet = new AnimatorSet();

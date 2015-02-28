@@ -30,12 +30,12 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/avatar_image_description"
-        android:src="@mipmap/ic_launcher"
+        android:background="@mipmap/ic_launcher"
         android:layout_width="48dp"
         android:layout_height="48dp" />
 
     <TextView
-        android:id="@+id/topic_name_text_view"
+        android:id="@+id/topic_user_name_text_view"
         android:text="UFO"
         android:textColor="@color/text_color_black"
         android:layout_alignTop="@id/topic_avatar_image_view"
@@ -43,7 +43,6 @@
         android:layout_toEndOf="@id/topic_avatar_image_view"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -53,8 +52,8 @@
         android:layout_alignBottom="@id/topic_avatar_image_view"
         android:layout_toRightOf="@id/topic_avatar_image_view"
         android:layout_toEndOf="@id/topic_avatar_image_view"
-        android:layout_alignLeft="@id/topic_name_text_view"
-        android:layout_alignStart="@id/topic_name_text_view"
+        android:layout_alignLeft="@id/topic_user_name_text_view"
+        android:layout_alignStart="@id/topic_user_name_text_view"
         android:layout_marginBottom="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
