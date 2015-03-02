@@ -12,6 +12,8 @@ import com.example.lyz.myv2ex.AppConfig;
 import com.example.lyz.myv2ex.MySingleton;
 import com.example.lyz.myv2ex.R;
 import com.example.lyz.myv2ex.models.ReplyModel;
+import com.example.lyz.myv2ex.utils.DateUtils;
+import com.example.lyz.myv2ex.widgets.RelativeTimeTextView;
 
 import java.util.ArrayList;
 
@@ -36,9 +38,11 @@ public class ReplyViewAdapter extends ArrayAdapter<ReplyModel> {
         NetworkImageView replyAvatarImageView = (NetworkImageView)convertView.findViewById(R.id.reply_avatar_image_view);
         TextView replyUserNameTextView = (TextView)convertView.findViewById(R.id.reply_user_name_text_view);
         TextView replyContentTextView = (TextView)convertView.findViewById(R.id.reply_content_text_view);
+        RelativeTimeTextView replyTimeAgoTextView = (RelativeTimeTextView)convertView.findViewById(R.id.reply_time_ago_text_view);
 
         ReplyModel replyModel = replyModels.get(position);
         replyAvatarImageView.setImageUrl(AppConfig.HTTPS + replyModel.getMemberModel().getAvatarNormal(), MySingleton.getInstance(context).getImageLoader());
+        replyTimeAgoTextView.setText(DateUtils.convertDistTimeStampToString(replyModel.getCreated()));
         replyUserNameTextView.setText(replyModel.getMemberModel().getUserName());
         replyContentTextView.setText(replyModel.getContent());
 

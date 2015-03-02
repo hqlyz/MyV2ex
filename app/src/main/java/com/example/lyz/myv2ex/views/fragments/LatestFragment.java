@@ -86,6 +86,9 @@ public class LatestFragment extends Fragment implements FragmentData {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), TopicActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(AppConfig.PARCEL_TOPIC_MODEL_KEY, topicModelList.get(position));
+                intent.putExtra(AppConfig.TOPIC_MODEL_BUNDLE_KEY, bundle);
                 startActivity(intent);
             }
         });

@@ -110,29 +110,7 @@ public class MainActivity extends ActionBarActivity implements LatestFragment.Ca
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                new AsyncTask<Void, Void, Void>() {
-//                    @Override
-//                    protected void onPreExecute() {
-//                        swipeRefreshLayout.setRefreshing(true);
-//
-//                    }
-//
-//                    @Override
-//                    protected Void doInBackground(Void... params) {
-//                        try {
-//                            Thread.sleep(3000);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                        return null;
-//                    }
-//
-//                    @Override
-//                    protected void onPostExecute(Void aVoid) {
-//                        swipeRefreshLayout.setRefreshing(false);
-//
-//                    }
-//                }.execute();
+
                 switch(currentPage) {
                     case 0:
                         if(latestFragment != null) {

@@ -11,7 +11,8 @@ public class AppConfig {
     public static final String HTTP = "http:";
     public static final String HTTPS = "https:";
 
-    public static final String PARCEL_TOPIC_MODEL_KEY = "topicMode";
+    public static final String PARCEL_TOPIC_MODEL_KEY = "topic_mode";
+    public static final String TOPIC_MODEL_BUNDLE_KEY = "topic_bundle";
 
     public static final long MINUTE_IN_MILLIS = 60 * 1000;
     public static final long HOUR_IN_MILLIS = 60 * MINUTE_IN_MILLIS;

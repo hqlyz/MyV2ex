@@ -1,14 +1,15 @@
 package com.example.lyz.myv2ex.views;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.lyz.myv2ex.AppConfig;
 import com.example.lyz.myv2ex.R;
 import com.example.lyz.myv2ex.views.fragments.TopicFragment;
 
-public class TopicActivity extends ActionBarActivity {
+public class TopicActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,10 +18,17 @@ public class TopicActivity extends ActionBarActivity {
 
         if(savedInstanceState == null) {
             TopicFragment topicFragment = new TopicFragment();
+            Bundle bundle = getIntent().getBundleExtra(AppConfig.TOPIC_MODEL_BUNDLE_KEY);
+            topicFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().add(R.id.topic_detail_container, topicFragment).commit();
         }
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("");
+        }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,10 +45,17 @@ public class TopicActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == android.R.id.home) {
+            this.finish();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit);
     }
 }
