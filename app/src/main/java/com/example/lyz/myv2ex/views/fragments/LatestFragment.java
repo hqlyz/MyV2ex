@@ -19,6 +19,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.lyz.myv2ex.AppConfig;
 import com.example.lyz.myv2ex.DebugLog;
 import com.example.lyz.myv2ex.FragmentData;
+import com.example.lyz.myv2ex.GetDataCallback;
 import com.example.lyz.myv2ex.MySingleton;
 import com.example.lyz.myv2ex.R;
 import com.example.lyz.myv2ex.adapters.TopicViewAdapter;
@@ -46,7 +47,7 @@ public class LatestFragment extends Fragment implements FragmentData {
     private static ArrayList<TopicModel> topicModelList;
     private TopicViewAdapter topicViewAdapter;
     private Activity activity;
-    private Callback callback;
+    private GetDataCallback callback;
 
     public LatestFragment() {
         // Required empty public constructor
@@ -100,9 +101,9 @@ public class LatestFragment extends Fragment implements FragmentData {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            callback = (Callback)activity;
+            callback = (GetDataCallback)activity;
         } catch (ClassCastException e) {
-            throw new RuntimeException(activity.toString() + " must implement LatestFragment.Callback");
+            throw new ClassCastException(activity.toString() + " must implement GetDataCallback");
         }
     }
 
@@ -180,7 +181,5 @@ public class LatestFragment extends Fragment implements FragmentData {
         getData();
     }
 
-    public interface Callback {
-        public void updateDataCompleted();
-    }
+
 }

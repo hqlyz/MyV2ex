@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.lyz.myv2ex.DebugLog;
+import com.example.lyz.myv2ex.GetDataCallback;
 import com.example.lyz.myv2ex.R;
 import com.example.lyz.myv2ex.models.TopicModel;
 import com.example.lyz.myv2ex.views.fragments.AllNodesFragment;
@@ -23,7 +24,7 @@ import com.example.lyz.myv2ex.views.fragments.SettingFragment;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements LatestFragment.Callback {
+public class MainActivity extends ActionBarActivity implements GetDataCallback {
 
     private ViewPager viewPager;
     private ActionBar actionBar;
@@ -75,6 +76,7 @@ public class MainActivity extends ActionBarActivity implements LatestFragment.Ca
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
                 currentPage = position;
+                setSwipeRefreshEnabled(currentPage != 2);
             }
 
             @Override
@@ -87,6 +89,7 @@ public class MainActivity extends ActionBarActivity implements LatestFragment.Ca
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
                 viewPager.setCurrentItem(tab.getPosition());
                 currentPage = tab.getPosition();
+                setSwipeRefreshEnabled(currentPage != 2);
             }
 
             @Override
@@ -118,8 +121,9 @@ public class MainActivity extends ActionBarActivity implements LatestFragment.Ca
                         }
                         break;
                     case 1:
-                        DebugLog.i("Page two refreshed.");
-                        swipeRefreshLayout.setRefreshing(false);
+                        if(allNodesFragment != null) {
+                            allNodesFragment.updateData();
+                        }
                         break;
                 }
             }
@@ -157,6 +161,11 @@ public class MainActivity extends ActionBarActivity implements LatestFragment.Ca
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void updateDataFailed() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
         public MyFragmentPagerAdapter(FragmentManager fragmentManager) {
@@ -172,7 +181,10 @@ public class MainActivity extends ActionBarActivity implements LatestFragment.Ca
                     }
                     return latestFragment;
                 case 1:
-                    return new AllNodesFragment();
+                    if(allNodesFragment == null) {
+                        allNodesFragment = new AllNodesFragment();
+                    }
+                    return allNodesFragment;
                 case 2:
                     return new SettingFragment();
                 default:
